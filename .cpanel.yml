@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/tactical/repositories/TacticalFitnessAPI/
-    - /bin cp * $DEPLOYPATH   
+    - /bin/cp composer.json $DEPLOYPATH
