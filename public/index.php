@@ -24,6 +24,6 @@ require '../src/routes/pageSetup.php';
 require '../src/routes/usuarios_progreso.php';
 require '../src/routes/login.php';
 $app->any('/', function (Request $request, Response $response) {
-    echo 'hola';
+    echo 'Tactical Fitness API';
 });
 $app->run();
