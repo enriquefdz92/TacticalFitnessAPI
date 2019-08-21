@@ -9,7 +9,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 // - Return user info
 // GET MENU ACCESS 
 
-$app->post('/api/login', function (Request $request, Response $response) {
+$app->post('/login', function (Request $request, Response $response) {
     $user = $request->getParam('user');
     $password = $request->getParam('password');
     $loginSQL = 'SELECT * FROM `users` WHERE USRNAME = ? and PSWD = ?';

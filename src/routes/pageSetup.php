@@ -4,8 +4,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 
 // GET AUTOCOMPLETE
-$app->get('/api/menus', function (Request $request, Response $response)  use ($app){
-$validate = new validation();
+$app->get('/menus', function (Request $request, Response $response)  use ($app){
+$validate = new validation($app, $request);
 $user = $validate->APIAccessValidation($this->token);
 
 $user_rollID=$user["idRol"];
@@ -39,6 +39,6 @@ $user_rollID=$user["idRol"];
     }
 });
 
-$app->any('/api/test',function(){
+$app->any('/test',function(){
     echo 'test';
 });

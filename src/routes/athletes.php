@@ -3,7 +3,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 
-$app->get('/api/athletes', function (Request $request, Response $response)  use ($app) {
+$app->get('/athletes', function (Request $request, Response $response)  use ($app) {
     $validate = new validation($app, $request);
     $loggedUser = $validate->APIAccessValidation();
     $jsonResponse = array();
@@ -31,7 +31,7 @@ $app->get('/api/athletes', function (Request $request, Response $response)  use 
     return $response->withJson($jsonResponse, $responseCode);
 });
 
-$app->get('/api/athletes/{id}', function (Request $request, Response $response) use ($app) {
+$app->get('/athletes/{id}', function (Request $request, Response $response) use ($app) {
 
     $validate = new validation($app, $request);
     $validate->APIAccessValidation();

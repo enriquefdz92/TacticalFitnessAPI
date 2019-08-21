@@ -6,7 +6,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 
 // Get Reporte Anual
-$app->get('/api/contabilidad/reporteAnual', function (Request $request, Response $response) {
+$app->get('/contabilidad/reporteAnual', function (Request $request, Response $response) {
     $ano = $request->getParam('ano');
     $sql = 'SELECT  Months.m AS month, ifnull(sum(datos.gasto),0) AS gastos, ifnull(sum(datos.ingresos),0) as ingresos FROM 
     (
@@ -48,7 +48,7 @@ $app->get('/api/contabilidad/reporteAnual', function (Request $request, Response
     }
 });
 
-$app->get('/api/contabilidad/reporteMensual', function (Request $request, Response $response) {
+$app->get('/contabilidad/reporteMensual', function (Request $request, Response $response) {
     $ano = $request->getParam('ano');
     $mes = $request->getParam('mes');
     if($ano == $mes && $ano==null){

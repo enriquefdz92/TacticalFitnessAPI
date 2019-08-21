@@ -5,7 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 
 // Get All usuarios
-$app->get('/api/usuario/progreso/{id}', function(Request $request, Response $response){
+$app->get('/usuario/progreso/{id}', function(Request $request, Response $response){
     
     $id = $request->getAttribute('id');
     $sql = "SELECT c.nombre, c.skill_1,c.skill_2,c.skill_3, c.icon, ifnull(u.progresoID,0) as progreso 
