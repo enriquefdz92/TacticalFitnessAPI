@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/tactical/repositories/TacticalFitnessAPI/
-    - /bin/cp public $DEPLOYPATH
+    - /bin/cp -R /home/tactical/public_html/TacticalFitnessAPI $DEPLOYPATH
