@@ -1,4 +1,5 @@
 <?php
+
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 // TODO
@@ -10,14 +11,13 @@ use \Psr\Http\Message\ResponseInterface as Response;
 // GET MENU ACCESS 
 
 $app->post('/login', function (Request $request, Response $response) {
+
     $user = $request->getParam('user');
     $password = $request->getParam('password');
     $loginSQL = 'SELECT * FROM `users` WHERE USRNAME = ? and PSWD = ?';
 
     try {
-        // Get DB Object
         $db = new db();
-        // Connect
         $db = $db->connect();
         $stmt = $db->prepare($loginSQL);
         $stmt->bindParam(1, $user);
@@ -25,40 +25,54 @@ $app->post('/login', function (Request $request, Response $response) {
         $stmt->execute();
 
         if ($stmt->rowCount() == 0) {
-            echo '{ "status" : "false", "message" : "Wrong User/Password"}';
+            $responseJson = (object) [
+                'status' => false,
+                'message' => 'Wrong User/Password'
+            ];
+            echo json_encode($responseJson);
             exit;
         } else {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $userID = $row['id'];
-                $newToken="Bearer " . base64_encode(random_bytes(32));
-                saveToken($userID, $newToken);
-               
+                $newToken = "Bearer " . base64_encode(random_bytes(32));
+                saveToken($userID, $newToken, $row);
             }
         }
-    } catch (PDOException $e) {
-        echo '{"error": {"text": "' . $e->getMessage() . '"}';
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode($GLOBALS['errorResponse']);
     }
 });
 
 
-function saveToken($user, $token){
-    try{
-                // Get DB Object
-                $db = new db();
-                // Connect
-                $db = $db->connect();
-                $sql = 'INSERT INTO `API_TOKENS`(userID,token,date) values (?,?,now())
+function saveToken($user, $token, $data)
+{
+    try {
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+        $sql = 'INSERT INTO `API_TOKENS`(userID,token,date) values (?,?,now())
                         ON DUPLICATE KEY UPDATE 
                         token=? , date = now()';
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam(1, $user);
-                $stmt->bindParam(2, $token);
-                $stmt->bindParam(3, $token);
-                $stmt->execute();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(1, $user);
+        $stmt->bindParam(2, $token);
+        $stmt->bindParam(3, $token);
+        $stmt->execute();
 
-                echo '{ "status" : "true", "message" : "Successfuly logged in", "token": "' . $token . '"}';
-    } catch(PDOException $e){
-        echo '{"error": {"text": "' . $e->getMessage() . '"}';
+
+        $responseJson = (object) [
+            'status' => true,
+            'message' => 'Logged in',
+            'token' => $token,
+            'nombre' => $data["nombre"],
+            'apellido' => $data["apellido"],
+            'imgurl' => $data["picRoute"]
+        ];
+        echo json_encode($responseJson);
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode($GLOBALS['errorResponse']);
     }
-   
 }
