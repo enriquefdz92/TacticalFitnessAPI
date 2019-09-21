@@ -29,18 +29,18 @@ $app->post('/login', function (Request $request, Response $response) {
                 'status' => false,
                 'message' => 'Wrong User/Password'
             ];
-            echo json_encode($responseJson);
+            return $response->withJson( json_encode($responseJson));
             exit;
         } else {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $userID = $row['id'];
                 $newToken = "Bearer " . base64_encode(random_bytes(32));
-                saveToken($userID, $newToken, $row);
+                return $response->withJson(saveToken($userID, $newToken, $row));
             }
         }
     } catch (Exception $e) {
         error_log($e->getMessage());
-        echo json_encode($GLOBALS['errorResponse']);
+        return $response->withJson( json_encode($GLOBALS['errorResponse']));
     }
 });
 
@@ -70,9 +70,9 @@ function saveToken($user, $token, $data)
             'apellido' => $data["apellido"],
             'imgurl' => $data["picRoute"]
         ];
-        echo json_encode($responseJson);
+        return $responseJson;
     } catch (Exception $e) {
         error_log($e->getMessage());
-        echo json_encode($GLOBALS['errorResponse']);
+        return$GLOBALS['errorResponse'];
     }
 }

@@ -50,12 +50,12 @@ $app->get('/membership', function (Request $request, Response $response) {
                         'cPhone' => $row['poc_phone'],
 
                     ];
-                    echo json_encode($responseJson);
+                    return $response->withJson(json_encode($responseJson));
                     exit;
                 }
         }
     } catch (Exception $e) {
         error_log($e->getMessage());
-        echo json_encode($GLOBALS['errorResponse']);
+        return $response->withJson(json_encode($GLOBALS['errorResponse']));
     }
 });

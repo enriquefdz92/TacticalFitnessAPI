@@ -4,8 +4,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 
 // GET AUTOCOMPLETE
-$app->get('/usuarios/usersCheck/autocomplete', function(Request $request, Response $response){
-    $sql = "select  rfid as id, concat(nombre,' ',apellido) as label from users where rfid is not null";
+$app->GET('/api/usuarios/usersCheck/autocomplete', function(Request $request, Response $response){
+    $sql = "select  rfid as id, concat(nombre,' ',apellido) as label from users where rfid is not null and trim(rfid) <> '' ";
     try{
         // Get DB Object
         $db = new db();
@@ -26,7 +26,7 @@ $app->get('/usuarios/usersCheck/autocomplete', function(Request $request, Respon
 });
 
 // GET TODAYS ASSISTANCE
-$app->get('/usuarios/usersCheck/todaysAssistance', function(Request $request, Response $response){
+$app->get('/api/usuarios/usersCheck/todaysAssistance', function(Request $request, Response $response){
     $sql = "select 
     a.rfid as id, 
     concat(nombre,' ', apellido) as nombre,
@@ -62,7 +62,7 @@ $app->get('/usuarios/usersCheck/todaysAssistance', function(Request $request, Re
 });
 
 // GET AUTOCOMPLETE
-$app->get('/usuarios/usersCheck/setAssistance/{rfid}', function(Request $request, Response $response){
+$app->get('/api/usuarios/usersCheck/setAssistance/{rfid}', function(Request $request, Response $response){
     $id = $request->getAttribute('rfid');
     $sql = 'call sp_asistencia("' . $id . '")'; 
     try{
@@ -108,7 +108,7 @@ $app->get('/usuarios/usersCheck/setAssistance/{rfid}', function(Request $request
 });
 
 // GET AUTOCOMPLETE
-$app->get('/usuarios/usersCheck/setAssistance2/{rfid}', function(Request $request, Response $response){
+$app->get('/api/usuarios/usersCheck/setAssistance2/{rfid}', function(Request $request, Response $response){
     $id = $request->getAttribute('rfid');
     $sql = 'call sp_asistencia("' . $id . '")'; 
     try{
